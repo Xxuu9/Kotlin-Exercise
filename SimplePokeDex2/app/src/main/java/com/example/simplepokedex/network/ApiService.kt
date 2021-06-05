@@ -1,9 +1,9 @@
-package com.example.simplepokedex
+package com.example.simplepokedex.network
 
 import com.example.simplepokedex.network.models.PokemonListWrapper
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("pokemon/")
+    @GET("pokemon/?limit=898")
     suspend fun getPokemons(): PokemonListWrapper
 }
