@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">IntentExercise</string>
+    <string name="open_activity">Open Activity</string>
+    <string name="open_url">Open Url</string>
+    <string name="share">Share</string>
+    <string name="open_map">Open Map</string>
+    <string name="Shiba">Shiba</string>
+</resources>
