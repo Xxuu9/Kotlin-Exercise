@@ -36,29 +36,39 @@ class DogRepository(private val apiService: ApiService) {
 
     }
 
-    suspend fun loadDogBreedDetails(dogBreedName: String){
-        var mainBreed = ""
-        var subBreed = ""
-        val splitTitle = dogBreedName.split(" ")
-        if (splitTitle.size == 2){
-            subBreed = splitTitle[0]
-            mainBreed = splitTitle[1]
-        }
-        else{
-            mainBreed = splitTitle[0]
-        }
+    //suspend fun loadDogBreedDetails(dogBreedName: String){
+    suspend fun loadDogBreedDetails(breed: Breed){
+//        var mainBreed = ""
+//        var subBreed = ""
+//        val splitTitle = dogBreedName.split(" ")
+//        if (splitTitle.size == 2){
+//            subBreed = splitTitle[0]
+//            mainBreed = splitTitle[1]
+//        }
+//        else{
+//            mainBreed = splitTitle[0]
+//        }
 
-        Log.e("txx2", mainBreed + subBreed)
+//        Log.e("txx2", mainBreed + subBreed)
+        Log.e("txx2", breed.title)
+//        try {
+//            if (subBreed != ""){
+//                _dogBreedDetails.value = apiService.getDetailsWithBothBreeds(mainBreed, subBreed)
+//            }
+//            else {
+//                _dogBreedDetails.value = apiService.getDetailsWithBreed(mainBreed)
+//            }
+//        }
         try {
-            if (subBreed != ""){
-                _dogBreedDetails.value = apiService.getDetailsWithBothBreeds(mainBreed, subBreed)
+            if (breed.subBreed != ""){
+                _dogBreedDetails.value = apiService.getDetailsWithBothBreeds(breed.breed, breed.subBreed)
             }
             else {
-                _dogBreedDetails.value = apiService.getDetailsWithBreed(mainBreed)
+                _dogBreedDetails.value = apiService.getDetailsWithBreed(breed.breed)
             }
         }
         catch (e: Exception) {
-
+            Log.e("txx2", "Error $e")
         }
         Log.e("txx2", _dogBreedDetails.value.toString())
     }

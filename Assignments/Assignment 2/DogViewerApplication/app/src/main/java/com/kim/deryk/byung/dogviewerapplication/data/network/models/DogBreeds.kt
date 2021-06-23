@@ -2,6 +2,7 @@ package com.kim.deryk.byung.dogviewerapplication.data.network.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 import java.util.*
 
 @JsonClass(generateAdapter = true)
@@ -31,7 +32,7 @@ data class BreedList(
 data class Breed(
     val breed: String,
     val subBreed: String = ""
-) : Comparable<Breed> {
+) : Comparable<Breed>, Serializable {
     val title: String
         get() = if (subBreed.isNotEmpty())
             "${subBreed.replaceFirstChar { it.titlecase(Locale.CANADA) }} ${breed.replaceFirstChar { it.titlecase(Locale.CANADA) }}"
