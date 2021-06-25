@@ -34,7 +34,7 @@ class ImageActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel.dogBreedDetails.observe(this){
-            Log.e("txx3", it.toString())
+            //Log.e("txx3", it.toString())
             populate(it)
         }
 

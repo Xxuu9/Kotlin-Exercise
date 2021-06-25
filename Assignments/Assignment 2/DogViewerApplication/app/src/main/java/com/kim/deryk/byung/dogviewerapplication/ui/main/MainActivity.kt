@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.navigateToDetails.observe(this){
             it?.let {
                 val intent = Intent(this, ImageActivity::class.java).apply{
-                    putExtra(BundleKeys.DOG_BREED_NAME, it.title)
-                }.apply{
                     putExtra(BundleKeys.DOG_BREED, it)
                 }
                 startActivity(intent)

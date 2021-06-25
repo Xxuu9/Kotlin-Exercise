@@ -20,7 +20,7 @@ class MainViewModel(private val repository: DogRepository) : ViewModel() {
     }
 
     fun onDogBreedClick(breed: Breed?) {
-        Log.e("txx", breed?.title.toString())
+        //Log.e("txx", breed?.title.toString())
         _navigateToDetails.value = breed
     }
 
