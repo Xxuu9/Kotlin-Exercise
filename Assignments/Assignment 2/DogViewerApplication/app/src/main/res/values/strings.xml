@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DogViewerApplication</string>
+    <string name="share">Share</string>
+    <string name="open_in_browser">Open in browser</string>
 </resources>

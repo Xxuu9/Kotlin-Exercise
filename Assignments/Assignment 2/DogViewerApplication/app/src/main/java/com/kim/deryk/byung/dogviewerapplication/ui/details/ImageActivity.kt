@@ -1,10 +1,15 @@
 package com.kim.deryk.byung.dogviewerapplication.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.kim.deryk.byung.dogviewerapplication.BundleKeys
@@ -26,9 +31,34 @@ class ImageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         viewModel.dogBreedDetails.observe(this){
             Log.e("txx3", it.toString())
             populate(it)
+        }
+
+        viewModel.share.observe(this) {
+            it?.let {
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, it.url)
+                }
+                startActivity(Intent.createChooser(intent, getString(R.string.share)))
+                viewModel.onShareComplete()
+            }
+        }
+
+        viewModel.browse.observe(this) {
+            it?.let {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
+                try {
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "No application found", Toast.LENGTH_SHORT).show()
+                }
+                viewModel.onBrowseClickComplete()
+            }
         }
     }
 
@@ -41,6 +71,29 @@ class ImageActivity : AppCompatActivity() {
             .load(breedDetails.url)
             .centerInside()
             .into(dogImage)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.details_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.share -> {
+                viewModel.onShareClick()
+                true
+            }
+            R.id.open_in_browser -> {
+                viewModel.onBrowseClick()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
 

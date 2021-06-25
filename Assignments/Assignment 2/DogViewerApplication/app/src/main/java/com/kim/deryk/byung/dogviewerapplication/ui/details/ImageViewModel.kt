@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.kim.deryk.byung.dogviewerapplication.BundleKeys
 import com.kim.deryk.byung.dogviewerapplication.data.DogRepository
 import com.kim.deryk.byung.dogviewerapplication.data.network.models.Breed
+import com.kim.deryk.byung.dogviewerapplication.data.network.models.BreedDetails
 import kotlinx.coroutines.launch
 
 
@@ -18,10 +19,32 @@ class ImageViewModel(
     val dogBreedDetails = repository.dogBreedDetails
     val breed: Breed = handle.get<Breed>(BundleKeys.DOG_BREED) ?: Breed("", "")
 
+    private val _share = MutableLiveData<BreedDetails?>()
+    val share: LiveData<BreedDetails?> get() = _share
+
+    private val _browse = MutableLiveData<BreedDetails?>()
+    val browse: LiveData<BreedDetails?> get() = _browse
+
     init {
         viewModelScope.launch {
             repository.loadDogBreedDetails(breed)
         }
+    }
+
+    fun onShareClick() {
+        _share.value = dogBreedDetails.value
+    }
+
+    fun onShareComplete() {
+        _share.value = null
+    }
+
+    fun onBrowseClick() {
+        _browse.value = dogBreedDetails.value
+    }
+
+    fun onBrowseClickComplete() {
+        _browse.value = null
     }
 }
 
