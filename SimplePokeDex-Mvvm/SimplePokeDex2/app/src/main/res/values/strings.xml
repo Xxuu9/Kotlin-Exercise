@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SimplePokeDex</string>
+    <string name="get_data">Get Data!</string>
+</resources>
