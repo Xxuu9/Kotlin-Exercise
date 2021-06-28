@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SimplePokeDex</string>
+    <string name="weight_title">Weight:</string>
+    <string name="base_experience_title">Base exp:</string>
+    <string name="height_title">Height:</string>
+    <string name="types_title">Types:</string>
+    <string name="show_details">Show details</string>
+    <string name="hide_details">Hide details</string>
+
+</resources>
