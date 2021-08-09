@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DogViewerApplication</string>
+    <string name="share">Share</string>
+    <string name="open_in_browse">Open in browser</string>
+    <string name="main_tab_all">All</string>
+    <string name="main_tab_faved">Faved</string>
+</resources>
