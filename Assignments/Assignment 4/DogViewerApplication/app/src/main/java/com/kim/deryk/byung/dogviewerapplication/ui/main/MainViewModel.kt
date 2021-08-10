@@ -6,6 +6,8 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.kim.deryk.byung.dogviewerapplication.BundleKeys
 import com.kim.deryk.byung.dogviewerapplication.data.DogRepository
 import com.kim.deryk.byung.dogviewerapplication.data.domain.Breed
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
@@ -15,14 +17,36 @@ class MainViewModel(
 ) : ViewModel() {
     private val mainTab: MainTab = state.get(BundleKeys.MAIN_TAB) ?: MainTab.ALL
 
-    val breedList: LiveData<List<Breed>> = repository.breedList.map {
-        it.filter { breed ->
-            mainTab == MainTab.ALL || breed.isFaved
-        }
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private val searchKey = MutableStateFlow("")
+    fun onNewSearchKey(key: String) {
+        searchKey.value = key
     }
 
-//    val breedList = repository.breedList
+    val breedList: LiveData<List<Breed>> = searchKey
+        .onEach {
+            _isLoading.value = true
+        }
+        .debounce{
+            if (it.isBlank()) 0 else 2000
+        }
+        .flatMapLatest { query ->
+            //filtering part
+        repository.breedList.map {
+            it.filter { breed ->
+                val isSelectedTab = mainTab == MainTab.ALL || breed.isFaved
+                val isSearch = query.isBlank() || breed.title.contains(query, ignoreCase = true)
+                isSelectedTab && isSearch
+            }
+        }
+    }.onEach {
+        _isLoading.value = false
+    }
+    .asLiveData()
 
+    
     private val _navigateToDetails = MutableLiveData<Breed?>()
     val navigateToDetails: LiveData<Breed?> get() = _navigateToDetails
 
@@ -51,6 +75,7 @@ class MainViewModel(
         }
     }
 }
+
 
 class MainViewModelFactory(private val repository: DogRepository,
                            owner: SavedStateRegistryOwner,

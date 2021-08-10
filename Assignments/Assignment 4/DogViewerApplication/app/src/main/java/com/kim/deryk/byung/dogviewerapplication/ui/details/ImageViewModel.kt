@@ -6,6 +6,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.kim.deryk.byung.dogviewerapplication.BundleKeys
 import com.kim.deryk.byung.dogviewerapplication.data.DogRepository
 import com.kim.deryk.byung.dogviewerapplication.data.domain.Breed
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ImageViewModel(
@@ -14,6 +15,11 @@ class ImageViewModel(
 ): ViewModel() {
     private val selectedBreed = state.get<Breed>(BundleKeys.BREED) as Breed
     val imageUrl = repository.randomImage
+    val isLoading: LiveData<Boolean> = imageUrl.switchMap{
+        liveData {
+            emit(it == null)
+        }
+    }
 
     private val _shareImage = MutableLiveData<String?>()
     val shareImage: LiveData<String?> get() = _shareImage
@@ -23,6 +29,8 @@ class ImageViewModel(
 
     init {
         viewModelScope.launch {
+            //TODO
+            delay(2000)
             repository.loadRandomImage(selectedBreed)
         }
     }

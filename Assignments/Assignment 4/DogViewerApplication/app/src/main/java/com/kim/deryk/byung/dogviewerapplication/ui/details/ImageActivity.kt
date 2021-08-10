@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.kim.deryk.byung.dogviewerapplication.DogViewerApplication
 import com.kim.deryk.byung.dogviewerapplication.R
@@ -35,6 +36,12 @@ class ImageActivity : AppCompatActivity() {
             it?.let {
                 Glide.with(this).load(it).centerInside().into(binding.dogImageView)
             }
+        }
+
+
+        viewModel.isLoading.observe(this) {isLoading ->
+                binding.loading.isVisible = isLoading
+                binding.dogImageView.isVisible = !isLoading
         }
 
         viewModel.shareImage.observe(this) {

@@ -7,6 +7,8 @@ import com.kim.deryk.byung.dogviewerapplication.data.database.BreedDatabase
 import com.kim.deryk.byung.dogviewerapplication.data.domain.Breed
 import com.kim.deryk.byung.dogviewerapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -14,11 +16,13 @@ import java.io.IOException
 class DogRepository(private val apiService: ApiService,
                     private val database: BreedDatabase) {
 
-    val breedList: LiveData<List<Breed>> = database.getBreedDao().get().map {breedList ->
-        breedList.map { it.toBreed() }
+    val breedList: Flow<List<Breed>> = database.getBreedDao().get().map { breedList ->
+        breedList.map {
+            it.toBreed()
+        }
     }
 
-    private val _randomImage = MutableLiveData<String>()
+    private val _randomImage = MutableLiveData<String>(null)
     val randomImage: LiveData<String> get() = _randomImage
 
     suspend fun loadDogList() {

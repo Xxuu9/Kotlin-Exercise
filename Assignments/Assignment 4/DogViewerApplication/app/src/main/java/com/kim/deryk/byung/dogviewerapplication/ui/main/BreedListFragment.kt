@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +44,16 @@ class BreedListFragment: Fragment() {
                 viewModel.onFaveClick(breed)
             }
         })
+
+        binding.editText.addTextChangedListener {
+            viewModel.onNewSearchKey(it?.toString() ?: "")
+        }
+
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.loading.isVisible = it
+            binding.recyclerView.isVisible = !it
+        }
 
         binding.recyclerView.also {
             it.layoutManager = LinearLayoutManager(activity)
